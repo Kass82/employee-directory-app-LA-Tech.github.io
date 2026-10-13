@@ -3,35 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Employee Directory</title>
-    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style-4.css">
 </head>
+
 <body>
     <header class="directory-header">
         <p class="header-label">EMPLOYEE DIRECTORY</p>
+
         <h1>Meet Our Team</h1>
-        <p class="header-description">Find people, departments, and contact information across our organization.</p>
+
+        <p class="header-description">
+            Search our employee directory to learn more about each team
+            member, their department, skills, and contact information.
+        </p>
     </header>
 
-    <div class="search-container">
-        <span class="search-icon" aria-hidden="true">⌕</span>
-        <input type="text" id="search" placeholder="Search employees..." aria-label="Search employees">
-        
-        <select id="department-filter">
-            <option value="all">All Departments</option>
-        </select>
-    </div>
+    <main>
+        <section
+            class="search-container"
+            aria-label="Employee search and department filter"
+        >
+            <span class="search-icon" aria-hidden="true">⌕</span>
 
-    <p id = "results-count" aria-live="polite"></p>
-    <div id="employee-list" class="employee-grid">
-        <!-- Employee information will appear here -->
-    </div>
+            <label for="search" class="visually-hidden">
+                Search employees
+            </label>
+
+            <input
+                type="search"
+                id="search"
+                placeholder="Search by name, title, or department..."
+                aria-label="Search employees"
+            >
+
+            <label for="department-filter" class="visually-hidden">
+                Filter by department
+            </label>
+
+            <select id="department-filter">
+                <option value="all">All Departments</option>
+            </select>
+        </section>
+
+        <p id="results-count" aria-live="polite"></p>
+
+        <section
+            id="employee-list"
+            class="employee-grid"
+            aria-label="Employee profiles"
+        >
+            <!-- Employee cards will appear here -->
+        </section>
+    </main>
 
     <footer>
-
         <p>Employee Directory App © 2026</p>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
-
