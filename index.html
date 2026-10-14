@@ -7,12 +7,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="directory-header">
-        <p class="header-label">EMPLOYEE DIRECTORY</p>
-        <h1>Meet Our Team</h1>
-        <p class="header-description">Find people, departments, and contact information across our organization.</p>
-    </header>
+    <section id="Home" class="hero-section">
+        <div class="hero-container">
 
+            <header class="directory-header">
+                <div class="header-container">
+
+                    <a href="#Home" class="logo">LA Tech Rising</a>
+
+                    <button class="menu-toggle"
+                        aria-label="Toggle navigation menu"
+                        aria-expanded="false" aria-controls="primary-navigation" type="button"> 
+                        ☰
+                    </button>
+
+                    <nav class="nav-links" id="primary-navigation"
+                        aria-label="Main navigation">
+                        <a href="#Home">Home</a>
+                        <a href="#About">About</a>
+                        <a href="#directory">Directory</a>
+                        <a href="#Contact">Contact</a>
+                    </nav>
+                </div>
+            </header>
+            
+            <p class="header-label">EMPLOYEE DIRECTORY</p>
+            <h1>Meet Our Team</h1>
+            <p class="header-description">
+                Find people, departments, team members, contact
+                information and connect with our growing community
+                across our organization.
+            </p>
+
+        </div>
+    </section>
+
+    <section id="directory" class="directory-section">
+        <div class="directory-container">
+            <h2>Employee Directory</h2>
+            <p>Search and explore our team members below.</p>
+        </div>
     <div class="search-container">
         <span class="search-icon" aria-hidden="true">⌕</span>
         <input type="text" id="search" placeholder="Search employees..." aria-label="Search employees">

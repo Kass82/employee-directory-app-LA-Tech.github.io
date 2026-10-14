@@ -1,5 +1,6 @@
 const searchInput = document.querySelector('#search');
-const employeeList = document.querySelector('#employee-list');
+const employeeList = document.querySelector('#employee-list');  
+const resultsCount = document.querySelector('#results-count');
 let employees = [];
 
 function makeCard(employee) {
@@ -29,6 +30,7 @@ if (employee.name === 'Omid Ahmadi') {
     department.className = 'department-badge ' + employee.department.toLowerCase();
     department.textContent = employee.department;
 
+  
     const email = document.createElement('a');
     email.href = 'mailto:' + employee.email;
     email.textContent = employee.email;
@@ -75,5 +77,23 @@ fetch('employees.json')
     .catch(() => {
         employeeList.textContent = 'Employee data could not load. Open this project with Live Server and try again.';
     });
-    
-    const resultsCount = document.querySelector('#results-count');
+
+    const menuButton = document.querySelector('.menu-toggle');
+    const navigation = document.querySelector('.nav-links');
+
+    if (menuButton && navigation) {
+        menuButton.addEventListener('click', () => {
+            const isOpen = navigation.classList.toggle('open');
+
+            menuButton.setAttribute('aria-expanded', isOpen);
+            menuButton.setAttribute('aria-label', isOpen ? 'x' : '☰');
+        });
+
+        navigation.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navigation.classList.remove('open');
+                menuButton.setAttribute('aria-expanded', 'false');
+                menuButton.setAttribute('aria-label', '☰');
+            });
+        });
+    }
