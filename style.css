@@ -77,7 +77,8 @@ h1 {
     transform: translateY(-50%);
 }
 
-#department-filter {
+#department-filter,
+#sort-filter {
     flex: 0 0 auto;
     height: 48px;
     padding: 0 12px;
@@ -377,7 +378,8 @@ footer {
     }
 
     .search-container input,
-    #department-filter {
+    #department-filter,
+    #sort-filter {
         width: 100%;
     }
 
@@ -428,7 +430,7 @@ footer {
 .hero-section .header-description { color: #fff; text-align: center; max-width: 550px; margin: 12px auto 0; padding: 0 20px; }
 .menu-toggle { display: none; min-width: 44px; min-height: 44px; background: transparent; color: #fff; border: 1px solid #bad1f6; border-radius: 8px; font-size: 24px; cursor: pointer; }
 .nav-links a:focus-visible, .logo:focus-visible, .menu-toggle:focus-visible { outline: 3px solid #bad1f6; outline-offset: 4px; }
-.copy-email:focus-visible, .profile-button:focus-visible, .modal-close:focus-visible, .employee-card a:focus-visible, #department-filter:focus-visible { outline: 3px solid #6366f1; outline-offset: 3px; }
+.copy-email:focus-visible, .profile-button:focus-visible, .modal-close:focus-visible, .employee-card a:focus-visible, #department-filter:focus-visible, #sort-filter:focus-visible { outline: 3px solid #6366f1; outline-offset: 3px; }
 .directory-section { margin-top: 28px; }
 @media (max-width: 650px) {
     .hero-section .directory-header { padding: 14px 16px; }

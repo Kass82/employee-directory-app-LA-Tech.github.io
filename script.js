@@ -1,8 +1,9 @@
 const searchInput = document.querySelector('#search');
 const departmentFilter = document.querySelector('#department-filter');
-//line above connects js to he html
-const employeeList = document.querySelector('#employee-list');
+const sortFilter = document.querySelector('#sort-filter');
 const resultsCount = document.querySelector('#results-count');
+//line above connects js to the html
+const employeeList = document.querySelector('#employee-list');
 
 const icons = {
     linkedin: "img/logo/linkedInLogo.png",
@@ -17,6 +18,16 @@ const socialIcons = {
     github: 'img/logo/gitHubLogo.png',
     portfolio: 'img/logo/websiteLogo.png'
 };
+
+function isSafeExternalUrl(link) {
+    if (typeof link !== 'string' || !link.trim()) return false;
+    try {
+        const url = new URL(link);
+        return url.protocol === 'https:' || url.protocol === 'http:';
+    } catch {
+        return false;
+    }
+}
 
 function makeCard(employee) {
     const card = document.createElement('article');
@@ -102,7 +113,7 @@ function makeCard(employee) {
     ];
 
     cardSocials.forEach(social => {
-        if (!social.url) return;
+        if (!isSafeExternalUrl(social.url)) return;
 
         const link = document.createElement('a');
         link.href = social.url;
@@ -203,7 +214,7 @@ function openProfile(employee) {
     ];
 
     socialProfiles.forEach(profile => {
-        if (!profile.url) return;
+        if (!isSafeExternalUrl(profile.url)) return;
 
         const link = document.createElement('a');
         link.href = profile.url;
@@ -251,7 +262,7 @@ function openProfile(employee) {
 function renderEmployees() {
     const query = searchInput.value.trim().toLowerCase();
     const selectedDepartment = departmentFilter.value;
-
+    const selectSort = sortFilter.value;
     const matches = employees.filter(employee => {
         const matchesSearch = [
             employee.name,
@@ -269,6 +280,12 @@ function renderEmployees() {
             employee.department.toLowerCase() === selectedDepartment;
 
         return matchesSearch && matchesDepartment;
+    });
+    matches.sort((employeeA, employeeB) => {
+        const nameA = String(employeeA.name || '').trim();
+        const nameB = String(employeeB.name || '').trim();
+        const comparison = nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
+        return selectSort === 'za' ? -comparison : comparison;
     });
 
     resultsCount.textContent =
@@ -291,6 +308,7 @@ function renderEmployees() {
 
 searchInput.addEventListener('input', renderEmployees);
 departmentFilter.addEventListener('change', renderEmployees);
+sortFilter.addEventListener('change', renderEmployees);
 
 fetch('employees.json')
     .then(response => {
