@@ -53,6 +53,7 @@ function makeCard(employee) {
         'department-badge ' + employee.department.toLowerCase();
     department.textContent = employee.department;
 
+  
     const email = document.createElement('a');
     email.href = 'mailto:' + employee.email;
     email.textContent = employee.email;
@@ -326,3 +327,43 @@ fetch('employees.json')
         employeeList.textContent =
             'Employee data could not load. Open this project with Live Server and try again.';
     });
+
+const menuButton = document.querySelector('.menu-toggle');
+const navigation = document.querySelector('.nav-links');
+if (menuButton && navigation) {
+    function closeMenu() {
+        navigation.classList.remove('open');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Open navigation menu');
+        menuButton.textContent = '☰';
+    }
+    menuButton.addEventListener('click', () => {
+        const isOpen = navigation.classList.toggle('open');
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+        menuButton.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+        menuButton.textContent = isOpen ? '×' : '☰';
+    });
+    navigation.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+    navigation.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            closeMenu();
+            menuButton.focus();
+        }
+    });
+    menuButton.addEventListener('keydown', event => {
+        if (event.key === 'Escape') closeMenu();
+    });
+    function updateActiveLink() {
+        const current = window.location.hash || '#Home';
+        navigation.querySelectorAll('a').forEach(link => {
+            const active = link.getAttribute('href') === current;
+            link.classList.toggle('active', active);
+            if (active) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+        });
+    }
+    window.addEventListener('hashchange', updateActiveLink);
+    updateActiveLink();
+}
