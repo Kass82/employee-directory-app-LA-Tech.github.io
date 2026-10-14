@@ -1,6 +1,8 @@
 const searchInput = document.querySelector('#search');
 const departmentFilter = document.querySelector('#department-filter');
-//line above connects js to he html
+const sortFilter = document.querySelector('#sort-filter');
+const resultsCount = document.querySelector('#results-count');
+//line above connects js to the html
 const employeeList = document.querySelector('#employee-list');
 const icons = {
     linkedin : "/img/logo/linkedinLogo.png",
@@ -8,6 +10,17 @@ const icons = {
     portfolio : "/img/logo/websiteLogo.png"
 }
 let employees = [];
+
+function isSafeExternalUrl(link){
+    try {
+        const url = new URL(link);
+        return url.protocol === 'https:' ||
+                url.protocol === 'http:';
+    }catch{
+        return false;
+    }
+}
+// Function above is to create external link secuirty validation 
 
 function makeCard(employee) {
     const card = document.createElement('article');
@@ -44,7 +57,7 @@ function makeCard(employee) {
     email.href = 'mailto:' + employee.email;
     email.textContent = employee.email;
 
-    if (employee.linkedin) {
+    if (employee.linkedin && isSafeExternalUrl(employee.linkedin)) {
         const linkedin = document.createElement('a');
         linkedin.href = employee.linkedin;
         linkedin.target = '_blank';
@@ -56,7 +69,7 @@ function makeCard(employee) {
         linkedin.appendChild(linkedinImg);
         socialLinks.appendChild(linkedin);
     }
-    if (employee.github) {
+    if (employee.github && isSafeExternalUrl(employee.github)) {
         const github = document.createElement('a');
         github.href = employee.github;
         github.target = '_blank';
@@ -69,7 +82,7 @@ function makeCard(employee) {
         github.appendChild(githubImg);
         socialLinks.appendChild(github);
     }
-    if (employee.portfolio) {
+    if (employee.portfolio && isSafeExternalUrl(employee.portfolio)) {
         const portfolio = document.createElement('a');
         portfolio.href = employee.portfolio;
         portfolio.target = '_blank';
@@ -89,7 +102,7 @@ function makeCard(employee) {
 function renderEmployees() {
    const query = searchInput.value.trim().toLowerCase();
     const selectedDepartment = departmentFilter.value;
-
+    const selectSort = sortFilter.value;
     const matches = employees.filter(employee => {
         const matchesSearch = [
             employee.name,
@@ -106,6 +119,14 @@ function renderEmployees() {
 
         return matchesSearch && matchesDepartment;
     });
+        matches.sort((employeeA, employeeB) => {
+            const nameA = employeeA.name.toLowerCase();
+            const nameB = employeeB.name.toLowerCase();
+            if (selectSort == 'za'){
+                return nameB.localeCompare(nameA);
+            }
+            return nameA.localeCompare(nameB);
+        });
 
     employeeList.replaceChildren();
     if (matches.length === 0) {
@@ -121,6 +142,7 @@ function renderEmployees() {
 
 searchInput.addEventListener('input', renderEmployees);
 departmentFilter.addEventListener('change', renderEmployees);
+sortFilter.addEventListener('change', renderEmployees);
 
 fetch('employees.json')
     .then(response => {
@@ -149,3 +171,5 @@ fetch('employees.json')
     .catch(() => {
         employeeList.textContent = 'Employee data could not load. Open this project with Live Server and try again.';
     });
+
+    
