@@ -19,13 +19,6 @@ h1 {
     font-weight: 700;
 }
 
-h1 + p {
-    margin: 10px 0 0;
-    color: #6b7280;
-    font-size: 16px;
-    line-height: 1.6;
-}
-
 .directory-header {
     padding: 40px 0 20px;
 }
@@ -38,12 +31,6 @@ h1 + p {
     letter-spacing: 1.5px;
 }
 
-.directory-header h1 {
-    margin: 0;
-    color: #171923;
-    font-size: clamp(28px, 5vw, 42px);
-}
-
 .header-description {
     max-width: 550px;
     margin: 12px 0 0;
@@ -51,8 +38,6 @@ h1 + p {
     font-size: 15px;
     line-height: 1.6;
 }
-
-/* Search and department filter */
 
 .search-container {
     display: flex;
@@ -75,7 +60,6 @@ h1 + p {
     color: #171923;
     font-size: 15px;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .search-container input:focus {
@@ -105,32 +89,26 @@ h1 + p {
     font-size: 14px;
 }
 
-/* Employee list */
-
 #employee-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 24px;
     margin: 30px 0;
 }
 
-/* Employee cards */
-
 .employee-card {
     display: flex;
     flex-direction: column;
-    min-height: 360px;
+    min-height: 480px;
     padding: 26px;
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     background: #ffffff;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-    transition: transform 0.25s ease, box-shadow 0.25s ease,
-        border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .employee-card:hover {
-    border-color: #c7d2fe;
     box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
     transform: translateY(-6px);
 }
@@ -151,17 +129,10 @@ h1 + p {
     overflow: hidden;
     background: #eceeff;
     background-position: center;
-    background-repeat: no-repeat;
     background-size: cover;
     color: #3f43b4;
     font-size: 20px;
     font-weight: 700;
-}
-
-.employee-avatar img {
-    width: 100%;
-    height: 100%;
-    margin: 0;
 }
 
 .employee-card h3 {
@@ -178,51 +149,16 @@ h1 + p {
     line-height: 1.5;
 }
 
-.employee-department {
-    margin-top: 8px !important;
-    font-weight: 600;
-}
-
-/* Department badges */
-
 .department-badge {
-    display: inline-block;
     width: fit-content;
     margin: 8px 0;
     padding: 7px 12px;
     border-radius: 999px;
-    background: #f3f4f6;
-    color: #4b5563;
+    background: #eef2ff;
+    color: #4f46e5;
     font-size: 12px;
     font-weight: 700;
 }
-
-.department-badge.engineering {
-    background: #eef2ff;
-    color: #4f46e5;
-}
-
-.department-badge.design {
-    background: #fdf2f8;
-    color: #be185d;
-}
-
-.department-badge.marketing {
-    background: #ecfdf5;
-    color: #047857;
-}
-
-.department-badge.people {
-    background: #fdf5ec;
-    color: #cc6f13;
-}
-
-.department-badge.support {
-    background: #fdecec;
-    color: #dd2e2e;
-}
-
-/* Employee links */
 
 .employee-card a {
     display: block;
@@ -231,21 +167,6 @@ h1 + p {
     color: #3f43b4;
     overflow-wrap: anywhere;
 }
-
-.employee-card a:hover {
-    color: #4f46e5;
-}
-
-.employee-card a:focus-visible,
-.profile-modal a:focus-visible,
-.modal-close:focus-visible,
-.profile-button:focus-visible,
-.copy-email:focus-visible {
-    outline: 3px solid #6366f1;
-    outline-offset: 3px;
-}
-
-/* Buttons */
 
 .copy-email,
 .profile-button {
@@ -257,7 +178,6 @@ h1 + p {
     cursor: pointer;
     font-size: 14px;
     font-weight: 700;
-    transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .copy-email {
@@ -268,7 +188,6 @@ h1 + p {
 
 .copy-email:hover {
     background: #e0e7ff;
-    transform: translateY(-2px);
 }
 
 .profile-button {
@@ -279,10 +198,27 @@ h1 + p {
 
 .profile-button:hover {
     background: #4f46e5;
-    transform: translateY(-2px);
 }
 
-/* Profile popup */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.social-links a {
+    margin: 0;
+}
+
+.social-links img {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: contain;
+}
 
 .profile-modal {
     position: fixed;
@@ -296,13 +232,12 @@ h1 + p {
 
 .profile-modal-content {
     position: relative;
-    width: min(100%, 430px);
+    width: min(100%, 460px);
     max-height: 90vh;
     padding: 32px;
     overflow-y: auto;
     border-radius: 20px;
     background: #ffffff;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     text-align: center;
 }
 
@@ -317,16 +252,11 @@ h1 + p {
 .profile-modal-content h2 {
     margin: 18px 0 6px;
     color: #171923;
-    font-size: 26px;
 }
 
 .profile-modal-content p {
     color: #6b7280;
     line-height: 1.5;
-}
-
-.profile-modal-content .department-badge {
-    margin-bottom: 8px;
 }
 
 .modal-close {
@@ -338,40 +268,44 @@ h1 + p {
     color: #6b7280;
     cursor: pointer;
     font-size: 30px;
-    line-height: 1;
 }
 
 .modal-close:hover {
     color: #171923;
 }
 
-/* Social links */
+.profile-bio {
+    margin: 18px 0;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f8fafc;
+    text-align: left;
+}
 
-.social-links {
+.skills-title {
+    margin-top: 20px;
+    color: #171923;
+    font-size: 18px;
+    text-align: left;
+}
+
+.skills-list {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 18px;
+    gap: 8px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
 }
 
-.social-links a {
-    display: inline-block;
-    margin: 0;
-    color: #3f43b4;
-    text-decoration: underline;
+.skills-list li {
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: 12px;
+    font-weight: 700;
 }
-
-.social-links a:hover {
-    text-decoration: none;
-}
-
-.social-links img {
-    width: 30px;
-    height: 30px;
-}
-
-/* Results and footer */
 
 #results-count {
     margin: 12px 0 5px;
@@ -398,14 +332,6 @@ footer {
     text-align: center;
 }
 
-.omid-avatar {
-    background-position: center 30%;
-    background-repeat: no-repeat;
-    background-size: 75%;
-}
-
-/* Accessibility */
-
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -418,19 +344,15 @@ footer {
     border: 0;
 }
 
-/* Tablet design */
+@media (max-width: 1000px) {
+    #employee-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
 
 @media (max-width: 768px) {
     body {
         padding: 20px;
-    }
-
-    .directory-header {
-        padding-top: 24px;
-    }
-
-    .directory-header h1 {
-        font-size: 32px;
     }
 
     #employee-list {
@@ -439,36 +361,24 @@ footer {
     }
 
     .employee-card {
-        min-height: 350px;
+        min-height: 440px;
         padding: 22px;
     }
 }
-
-/* Mobile design */
 
 @media (max-width: 560px) {
     body {
         padding: 16px;
     }
 
-    .directory-header h1 {
-        font-size: 28px;
-    }
-
-    .header-description {
-        font-size: 14px;
-    }
-
     .search-container {
         align-items: stretch;
         flex-direction: column;
-        gap: 10px;
     }
 
     .search-container input,
     #department-filter {
         width: 100%;
-        min-height: 48px;
     }
 
     .search-icon {
@@ -478,7 +388,6 @@ footer {
     #employee-list {
         grid-template-columns: 1fr;
         gap: 16px;
-        margin-top: 22px;
     }
 
     .employee-card {
@@ -486,35 +395,8 @@ footer {
         padding: 22px;
     }
 
-    .employee-card img,
-    .employee-avatar {
-        width: 80px;
-        height: 80px;
-    }
-
     .profile-modal-content {
         width: calc(100% - 32px);
         padding: 26px 20px;
-    }
-}
-
-/* Extra-small phones */
-
-@media (max-width: 360px) {
-    body {
-        padding: 12px;
-    }
-
-    .employee-card {
-        padding: 18px;
-    }
-
-    .employee-card h3 {
-        font-size: 18px;
-    }
-
-    .copy-email,
-    .profile-button {
-        font-size: 13px;
     }
 }
