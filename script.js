@@ -1,7 +1,14 @@
 const searchInput = document.querySelector('#search');
 const departmentFilter = document.querySelector('#department-filter');
+//line above connects js to he html
 const employeeList = document.querySelector('#employee-list');
 const resultsCount = document.querySelector('#results-count');
+
+const icons = {
+    linkedin: "img/logo/linkedInLogo.png",
+    github: "img/logo/gitHubLogo.png",
+    portfolio: "img/logo/websiteLogo.png"
+};
 
 let employees = [];
 
@@ -11,56 +18,19 @@ const socialIcons = {
     portfolio: 'img/logo/websiteLogo.png'
 };
 
-function createSocialLinks(employee) {
-    const socialLinks = document.createElement('div');
-    socialLinks.className = 'social-links';
-
-    const socialProfiles = [
-        {
-            name: 'LinkedIn',
-            url: employee.linkedin,
-            icon: socialIcons.linkedin
-        },
-        {
-            name: 'GitHub',
-            url: employee.github,
-            icon: socialIcons.github
-        },
-        {
-            name: 'Portfolio',
-            url: employee.portfolio,
-            icon: socialIcons.portfolio
-        }
-    ];
-
-    socialProfiles.forEach(profile => {
-        if (!profile.url) {
-            return;
-        }
-
-        const link = document.createElement('a');
-        link.href = profile.url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.setAttribute('aria-label', profile.name);
-
-        const icon = document.createElement('img');
-        icon.src = profile.icon;
-        icon.alt = profile.name;
-
-        link.appendChild(icon);
-        socialLinks.appendChild(link);
-    });
-
-    return socialLinks;
-}
-
 function makeCard(employee) {
     const card = document.createElement('article');
     card.className = 'employee-card';
 
     const avatar = document.createElement('div');
     avatar.className = 'employee-avatar';
+
+    const socialLinks = document.createElement('div');
+    socialLinks.className = 'social-links';
+
+    if (employee.name === 'Omid Ahmadi') {
+        avatar.classList.add('omid-avatar');
+    }
 
     if (employee.image) {
         avatar.style.backgroundImage = `url(${employee.image})`;
@@ -78,12 +48,13 @@ function makeCard(employee) {
     const title = document.createElement('p');
     title.textContent = employee.title;
 
-    const department = document.createElement('span');
-    department.className = 'department-badge';
+    const department = document.createElement('p');
+    department.className =
+        'department-badge ' + employee.department.toLowerCase();
     department.textContent = employee.department;
 
     const email = document.createElement('a');
-    email.href = `mailto:${employee.email}`;
+    email.href = 'mailto:' + employee.email;
     email.textContent = employee.email;
 
     const copyButton = document.createElement('button');
@@ -108,6 +79,44 @@ function makeCard(employee) {
         openProfile(employee);
     });
 
+    const cardSocialLinks = document.createElement('div');
+    cardSocialLinks.className = 'social-links';
+
+    const cardSocials = [
+        {
+            name: 'LinkedIn',
+            url: employee.linkedin,
+            icon: socialIcons.linkedin
+        },
+        {
+            name: 'GitHub',
+            url: employee.github,
+            icon: socialIcons.github
+        },
+        {
+            name: 'Portfolio',
+            url: employee.portfolio,
+            icon: socialIcons.portfolio
+        }
+    ];
+
+    cardSocials.forEach(social => {
+        if (!social.url) return;
+
+        const link = document.createElement('a');
+        link.href = social.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.setAttribute('aria-label', social.name);
+
+        const icon = document.createElement('img');
+        icon.src = social.icon;
+        icon.alt = social.name;
+
+        link.appendChild(icon);
+        cardSocialLinks.appendChild(link);
+    });
+
     card.append(
         avatar,
         name,
@@ -116,7 +125,7 @@ function makeCard(employee) {
         email,
         copyButton,
         profileButton,
-        createSocialLinks(employee)
+        cardSocialLinks
     );
 
     return card;
@@ -145,43 +154,64 @@ function openProfile(employee) {
     title.textContent = employee.title;
 
     const department = document.createElement('span');
-    department.className = 'department-badge';
+    department.className =
+        'department-badge ' + employee.department.toLowerCase();
     department.textContent = employee.department;
 
     const bio = document.createElement('p');
     bio.className = 'profile-bio';
     bio.textContent =
         employee.bio ||
-        `${employee.name} is a ${employee.title} in the ${employee.department} department.`;
+        `${employee.name} is a ${employee.title} on the ${employee.department} team.`;
 
-    const skillsTitle = document.createElement('h3');
-    skillsTitle.className = 'skills-title';
-    skillsTitle.textContent = 'Skills';
+    const skillsHeading = document.createElement('h3');
+    skillsHeading.className = 'skills-heading';
+    skillsHeading.textContent = 'Skills';
 
-    const skillsList = document.createElement('ul');
-    skillsList.className = 'skills-list';
+    const skills = document.createElement('p');
+    skills.className = 'profile-skills';
+    skills.textContent =
+        Array.isArray(employee.skills) && employee.skills.length
+            ? employee.skills.join(' • ')
+            : 'Skills not listed';
 
-    const skills = employee.skills || [];
-
-    if (skills.length === 0) {
-        const skill = document.createElement('li');
-        skill.textContent = 'Skills not listed';
-        skillsList.appendChild(skill);
-    } else {
-        skills.forEach(skillName => {
-            const skill = document.createElement('li');
-            skill.textContent = skillName;
-            skillsList.appendChild(skill);
-        });
-    }
-
-    const emailContainer = document.createElement('p');
+    const email = document.createElement('p');
 
     const emailLink = document.createElement('a');
-    emailLink.href = `mailto:${employee.email}`;
+    emailLink.href = 'mailto:' + employee.email;
     emailLink.textContent = employee.email;
 
-    emailContainer.appendChild(emailLink);
+    email.appendChild(emailLink);
+
+    const socialLinks = document.createElement('div');
+    socialLinks.className = 'social-links';
+
+    const socialProfiles = [
+        {
+            name: 'LinkedIn',
+            url: employee.linkedin || employee.socials?.linkedin
+        },
+        {
+            name: 'GitHub',
+            url: employee.github || employee.socials?.github
+        },
+        {
+            name: 'Portfolio',
+            url: employee.portfolio || employee.socials?.portfolio
+        }
+    ];
+
+    socialProfiles.forEach(profile => {
+        if (!profile.url) return;
+
+        const link = document.createElement('a');
+        link.href = profile.url;
+        link.textContent = profile.name;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        socialLinks.appendChild(link);
+    });
 
     content.append(
         closeButton,
@@ -190,10 +220,10 @@ function openProfile(employee) {
         title,
         department,
         bio,
-        skillsTitle,
-        skillsList,
-        emailContainer,
-        createSocialLinks(employee)
+        skillsHeading,
+        skills,
+        email,
+        socialLinks
     );
 
     modal.appendChild(content);
@@ -209,14 +239,12 @@ function openProfile(employee) {
         }
     });
 
-    function closeWithEscape(event) {
+    document.addEventListener('keydown', function closeWithEscape(event) {
         if (event.key === 'Escape') {
             modal.remove();
             document.removeEventListener('keydown', closeWithEscape);
         }
-    }
-
-    document.addEventListener('keydown', closeWithEscape);
+    });
 }
 
 function renderEmployees() {
@@ -224,18 +252,16 @@ function renderEmployees() {
     const selectedDepartment = departmentFilter.value;
 
     const matches = employees.filter(employee => {
-        const searchableText = [
+        const matchesSearch = [
             employee.name,
             employee.title,
             employee.department,
             employee.email,
-            employee.bio || '',
-            ...(employee.skills || [])
-        ]
-            .join(' ')
-            .toLowerCase();
-
-        const matchesSearch = searchableText.includes(query);
+            employee.bio,
+            ...(Array.isArray(employee.skills) ? employee.skills : [])
+        ].some(value =>
+            String(value || '').toLowerCase().includes(query)
+        );
 
         const matchesDepartment =
             selectedDepartment === 'all' ||
@@ -254,10 +280,8 @@ function renderEmployees() {
     if (matches.length === 0) {
         const message = document.createElement('p');
         message.className = 'empty-state';
-        message.textContent =
-            'No employees found. Try another search.';
-
-        employeeList.appendChild(message);
+        message.textContent = 'No employees found. Try another search.';
+        employeeList.append(message);
         return;
     }
 
@@ -283,9 +307,7 @@ fetch('employees.json')
         employees = data;
 
         const departments = [
-            ...new Set(
-                employees.map(employee => employee.department)
-            )
+            ...new Set(employees.map(employee => employee.department))
         ];
 
         departments.forEach(department => {
@@ -299,9 +321,7 @@ fetch('employees.json')
 
         renderEmployees();
     })
-    .catch(error => {
-        console.error(error);
-
+    .catch(() => {
         resultsCount.textContent = '';
         employeeList.textContent =
             'Employee data could not load. Open this project with Live Server and try again.';
