@@ -286,10 +286,10 @@ function renderEmployees() {
         return selectSort === 'za' ? -comparison : comparison;
     });
 
-    resultsCount.textContent =
-        `${matches.length} ${
+   resultsCount.textContent =
+        `Showing ${matches.length} of ${employees.length} ${
             matches.length === 1 ? 'employee' : 'employees'
-        } found.`;
+        }`;
 
     employeeList.replaceChildren();
 
