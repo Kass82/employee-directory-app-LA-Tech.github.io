@@ -6,6 +6,8 @@
 
     <title>Employee Directory</title>
 
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="img/logo/websiteLogo.png">
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -69,6 +71,14 @@
             <select id="department-filter">
                 <option value="all">All Departments</option>
             </select>
+
+            <select id="sort-filter">
+                <option value="none">Default</option>
+                <option value="azFilter">Sort A-Z</option>
+                <option value="zaFilter">Sort Z-A</option>    
+            </select>
+
+             <button id="clearSearch" aria-label="Clear search and filters">Clear</button>
 
             <label for="sort-filter" class="visually-hidden">Sort employees</label>
             <select id="sort-filter" aria-label="Sort employees">

@@ -44,7 +44,7 @@ h1 {
     position: relative;
     align-items: center;
     width: 100%;
-    max-width: 650px;
+    max-width: 700px;
     gap: 12px;
     margin: 25px 0;
 }
@@ -88,6 +88,29 @@ h1 {
     color: #4b5563;
     cursor: pointer;
     font-size: 14px;
+}
+#sort-filter {
+    flex: 0 0 auto;
+    height: 48px;
+    padding: 0 12px;
+    border: 1px solid #dfe3ea;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #4b5563;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#clearSearch{ 
+    flex: 0 0 auto;
+    height: 48px;
+    padding: 0 12px;
+    border: 1px solid #dfe3ea;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #4b5563;
+    cursor: pointer;
+    font-size: 14px; 
 }
 
 #employee-list {
@@ -218,7 +241,6 @@ h1 {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    object-fit: contain;
 }
 
 .profile-modal {

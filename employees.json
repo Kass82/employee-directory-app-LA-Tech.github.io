@@ -35,6 +35,8 @@
   {
     "name": "Arias Miguel",
     "title": "Co-Lead",
+    "department": "Operations",
+    "email": "sofia.martinez@example.com",
     "department": "Engineering",
     "email": "ariasmiguel727@gmail.com",
     "image": "img/3.png",
@@ -69,7 +71,7 @@
   {
     "name": "Omoroghomwan Jessy",
     "title": "Engineer",
-    "department": "Engineering",
+    "department": "Marketing",
     "email": "joycejessie45@gmail.com",
     "image": "img/4.png",
     "bio": "Jessy is an Engineer who helps develop project features and contributes to solving technical problems.",
@@ -86,7 +88,7 @@
   {
     "name": "Vera Kassandra",
     "title": "Engineer",
-    "department": "Engineering",
+    "department": "Design",
     "email": "vera826677@gmail.com",
     "image": "img/6.png",
     "bio": "Kassandra is an Engineer who contributes to the development, testing, and improvement of the project.",
