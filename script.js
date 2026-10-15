@@ -3,7 +3,6 @@ const departmentFilter = document.querySelector('#department-filter');
 const sortFilter = document.querySelector('#sort-filter');
 const clearButton = document.querySelector('#clear-button');
 //line above connects js to he html
-const employeeList = document.querySelector('#employee-list');
 const resultsCount = document.querySelector('#results-count');
 //line above connects js to the html
 const employeeList = document.querySelector('#employee-list');
@@ -266,9 +265,9 @@ function renderEmployees() {
             employee.name,
             employee.title,
             employee.department,
-   //         employee.email,
-   //         employee.bio,
-   //         ...(Array.isArray(employee.skills) ? employee.skills : [])
+            employee.email,
+            //employee.bio,
+            //...(Array.isArray(employee.skills) ? employee.skills : [])
         ].some(value =>
             String(value || '').toLowerCase().includes(query)
         );
@@ -279,6 +278,7 @@ function renderEmployees() {
 
         return matchesSearch && matchesDepartment;
     });
+
     matches.sort((employeeA, employeeB) => {
         const nameA = String(employeeA.name || '').trim();
         const nameB = String(employeeB.name || '').trim();
@@ -299,12 +299,6 @@ function renderEmployees() {
         message.textContent = 'No employees found. Try another search.';
         employeeList.append(message);
         return;
-    }
-
-    if (sortFilter.value === 'azFilter') {
-        matches.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortFilter.value === 'zaFilter') {
-        matches.sort((a, b) => b.name.localeCompare(a.name));
     }
 
     employeeList.append(...matches.map(makeCard));
