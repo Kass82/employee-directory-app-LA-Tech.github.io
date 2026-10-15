@@ -1,17 +1,14 @@
 const searchInput = document.querySelector('#search');
 const departmentFilter = document.querySelector('#department-filter');
+const sortFilter = document.querySelector('#sort-filter');
+const clearButton = document.querySelector('#clear-button');
 //line above connects js to he html
 const employeeList = document.querySelector('#employee-list');
 const resultsCount = document.querySelector('#results-count');
 
-const icons = {
-    linkedin: "img/logo/linkedInLogo.png",
-    github: "img/logo/gitHubLogo.png",
-    portfolio: "img/logo/websiteLogo.png"
-};
-
 let employees = [];
 
+// Social media icons mapping
 const socialIcons = {
     linkedin: 'img/logo/linkedInLogo.png',
     github: 'img/logo/gitHubLogo.png',
@@ -256,9 +253,9 @@ function renderEmployees() {
             employee.name,
             employee.title,
             employee.department,
-            employee.email,
-            employee.bio,
-            ...(Array.isArray(employee.skills) ? employee.skills : [])
+   //         employee.email,
+   //         employee.bio,
+   //         ...(Array.isArray(employee.skills) ? employee.skills : [])
         ].some(value =>
             String(value || '').toLowerCase().includes(query)
         );
@@ -285,11 +282,27 @@ function renderEmployees() {
         return;
     }
 
+    if (sortFilter.value === 'azFilter') {
+        matches.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortFilter.value === 'zaFilter') {
+        matches.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
     employeeList.append(...matches.map(makeCard));
 }
 
+
+
 searchInput.addEventListener('input', renderEmployees);
 departmentFilter.addEventListener('change', renderEmployees);
+sortFilter.addEventListener('change', renderEmployees);
+
+clearSearch.addEventListener('click', () => {
+    searchInput.value = '';
+    departmentFilter.value = 'all';
+    sortFilter.value = 'none';
+    renderEmployees();
+});
 
 fetch('employees.json')
     .then(response => {
