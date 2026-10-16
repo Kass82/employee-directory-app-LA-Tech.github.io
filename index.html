@@ -6,9 +6,8 @@
 
     <title>Employee Directory</title>
 
-    <!-- icon -->
     <link rel="icon" type="image/png" href="img/logo/websiteLogo.png">
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -17,17 +16,23 @@
 
             <header class="directory-header">
                 <div class="header-container">
-
                     <a href="#Home" class="logo">LA Tech Rising</a>
 
-                    <button class="menu-toggle"
+                    <button
+                        class="menu-toggle"
                         aria-label="Toggle navigation menu"
-                        aria-expanded="false" aria-controls="primary-navigation" type="button"> 
+                        aria-expanded="false"
+                        aria-controls="primary-navigation"
+                        type="button"
+                    >
                         ☰
                     </button>
 
-                    <nav class="nav-links" id="primary-navigation"
-                        aria-label="Main navigation">
+                    <nav
+                        class="nav-links"
+                        id="primary-navigation"
+                        aria-label="Main navigation"
+                    >
                         <a href="#Home">Home</a>
                         <a href="#About">About</a>
                         <a href="#directory">Directory</a>
@@ -35,21 +40,24 @@
                     </nav>
                 </div>
             </header>
-            
+
             <p class="header-label">EMPLOYEE DIRECTORY</p>
+
             <h1>Meet Our Team</h1>
+
             <p id="About" class="header-description">
                 Find people, departments, team members, contact
                 information and connect with our growing community
                 across our organization.
             </p>
-
         </div>
     </section>
 
     <main id="directory" class="directory-section">
         <h2>Employee Directory</h2>
+
         <p>Search and explore our team members below.</p>
+
         <section class="search-container">
             <span class="search-icon" aria-hidden="true">⌕</span>
 
@@ -72,16 +80,22 @@
                 <option value="all">All Departments</option>
             </select>
 
-            <label for="sort-filter" class="visually-hidden">Sort employees</label>
+            <label for="sort-filter" class="visually-hidden">
+                Sort employees
+            </label>
+
             <select id="sort-filter" aria-label="Sort employees">
                 <option value="az">Sort A-Z</option>
                 <option value="za">Sort Z-A</option>
             </select>
 
-             <button id="clearSearch" aria-label="Clear search and filters">Clear</button>
-
-
-            
+            <button
+                id="clearSearch"
+                type="button"
+                aria-label="Clear search and filters"
+            >
+                Clear
+            </button>
         </section>
 
         <p id="results-count" aria-live="polite"></p>
@@ -96,7 +110,11 @@
     </main>
 
     <footer id="Contact">
-        <p>Contact team members using the email and social links on their cards.</p>
+        <p>
+            Contact team members using the email and social links
+            on their cards.
+        </p>
+
         <p>Employee Directory App © 2026</p>
     </footer>
 
