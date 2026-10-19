@@ -1,15 +1,167 @@
 const searchInput = document.querySelector('#search');
 const departmentFilter = document.querySelector('#department-filter');
 const sortFilter = document.querySelector('#sort-filter');
-const clearButton = document.querySelector('#clear-button');
-//line above connects js to he html
+const clearButton = document.querySelector('#clear-button, #clearSearch');
 const resultsCount = document.querySelector('#results-count');
-//line above connects js to the html
 const employeeList = document.querySelector('#employee-list');
 
 let employees = [];
 
-// Social media icons mapping
+function createStatisticsSection() {
+    if (document.querySelector('.statistics-section')) {
+        return document.querySelector('.statistics-section');
+    }
+
+    const section = document.createElement('section');
+
+    section.className = 'statistics-section';
+    section.setAttribute('aria-label', 'Employee statistics');
+
+    section.innerHTML = `
+        <article class="stat-card stat-blue">
+            <div class="stat-icon">👥</div>
+            <div>
+                <h2 id="total-employees">0</h2>
+                <p>Total Employees</p>
+            </div>
+        </article>
+
+        <article class="stat-card stat-purple">
+            <div class="stat-icon">▥</div>
+            <div>
+                <h2 id="total-departments">0</h2>
+                <p>Departments</p>
+            </div>
+        </article>
+
+        <article class="stat-card stat-orange">
+            <div class="stat-icon">▥</div>
+            <div>
+                <h2 id="total-roles">0</h2>
+                <p>Roles</p>
+            </div>
+        </article>
+
+        <article class="stat-card stat-teal">
+            <div class="stat-icon">⊕</div>
+            <div>
+                <h2 id="new-employees">N/A</h2>
+                <p>New This Month</p>
+            </div>
+        </article>
+    `;
+
+    const heroSection = document.querySelector('.hero-section');
+    const directorySection = document.querySelector('.directory-section');
+
+    if (heroSection) {
+        heroSection.insertAdjacentElement('afterend', section);
+    } else if (directorySection) {
+        directorySection.insertAdjacentElement('afterbegin', section);
+    }
+
+    return section;
+}
+
+function updateStatistics() {
+    createStatisticsSection();
+
+    const departments = new Set(
+        employees
+            .map(employee => employee.department)
+            .filter(Boolean)
+    );
+
+    const roles = new Set(
+        employees
+            .map(employee => employee.title)
+            .filter(Boolean)
+    );
+
+    document.querySelector('#total-employees').textContent =
+        employees.length;
+
+    document.querySelector('#total-departments').textContent =
+        departments.size;
+
+    document.querySelector('#total-roles').textContent =
+        roles.size;
+
+    const hasJoiningDate = employees.some(employee =>
+        employee.joiningDate ||
+        employee.joinedDate ||
+        employee.startDate
+    );
+
+    if (!hasJoiningDate) {
+        document.querySelector('#new-employees').textContent = 'N/A';
+        return;
+    }
+
+    const currentDate = new Date();
+
+    const newEmployees = employees.filter(employee => {
+        const joiningDateValue =
+            employee.joiningDate ||
+            employee.joinedDate ||
+            employee.startDate;
+
+        const joiningDate = new Date(joiningDateValue);
+
+        return (
+            !Number.isNaN(joiningDate.getTime()) &&
+            joiningDate.getMonth() === currentDate.getMonth() &&
+            joiningDate.getFullYear() === currentDate.getFullYear()
+        );
+    });
+
+    document.querySelector('#new-employees').textContent =
+        newEmployees.length;
+}
+
+function setupBackToTopButton() {
+    if (document.querySelector('.back-to-top')) {
+        return;
+    }
+
+    const button = document.createElement('button');
+
+    button.className = 'back-to-top';
+    button.type = 'button';
+    button.textContent = '↑';
+    button.setAttribute('aria-label', 'Back to top');
+
+    document.body.appendChild(button);
+
+    function updateButtonVisibility() {
+        button.classList.toggle(
+            'show',
+            window.scrollY > 300
+        );
+    }
+
+    window.addEventListener(
+        'scroll',
+        updateButtonVisibility,
+        { passive: true }
+    );
+
+    button.addEventListener('click', () => {
+        const reducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches;
+
+        window.scrollTo({
+            top: 0,
+            behavior: reducedMotion ? 'auto' : 'smooth'
+        });
+    });
+
+    updateButtonVisibility();
+}
+
+setupBackToTopButton();
+
 const socialIcons = {
     linkedin: 'img/logo/linkedInLogo.png',
     github: 'img/logo/gitHubLogo.png',
@@ -17,10 +169,17 @@ const socialIcons = {
 };
 
 function isSafeExternalUrl(link) {
-    if (typeof link !== 'string' || !link.trim()) return false;
+    if (!link || typeof link !== 'string') {
+        return false;
+    }
+
     try {
         const url = new URL(link);
-        return url.protocol === 'https:' || url.protocol === 'http:';
+
+        return (
+            url.protocol === 'https:' ||
+            url.protocol === 'http:'
+        );
     } catch {
         return false;
     }
@@ -33,15 +192,9 @@ function makeCard(employee) {
     const avatar = document.createElement('div');
     avatar.className = 'employee-avatar';
 
-    const socialLinks = document.createElement('div');
-    socialLinks.className = 'social-links';
-
-    if (employee.name === 'Omid Ahmadi') {
-        avatar.classList.add('omid-avatar');
-    }
-
     if (employee.image) {
-        avatar.style.backgroundImage = `url(${employee.image})`;
+        avatar.style.backgroundImage =
+            `url("${employee.image}")`;
     } else {
         avatar.textContent = employee.name
             .split(/\s+/)
@@ -57,41 +210,44 @@ function makeCard(employee) {
     title.textContent = employee.title;
 
     const department = document.createElement('p');
-    department.className =
-        'department-badge ' + employee.department.toLowerCase();
+    department.className = 'department-badge';
     department.textContent = employee.department;
 
-  
     const email = document.createElement('a');
-    email.href = 'mailto:' + employee.email;
+    email.href = `mailto:${employee.email}`;
     email.textContent = employee.email;
 
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-email';
+    copyButton.type = 'button';
     copyButton.textContent = 'Copy Email';
 
     copyButton.addEventListener('click', async () => {
-        await navigator.clipboard.writeText(employee.email);
+        try {
+            await navigator.clipboard.writeText(employee.email);
+            copyButton.textContent = 'Copied ✓';
 
-        copyButton.textContent = 'Copied ✓';
-
-        setTimeout(() => {
-            copyButton.textContent = 'Copy Email';
-        }, 1500);
+            setTimeout(() => {
+                copyButton.textContent = 'Copy Email';
+            }, 1500);
+        } catch {
+            copyButton.textContent = 'Copy failed';
+        }
     });
 
     const profileButton = document.createElement('button');
     profileButton.className = 'profile-button';
+    profileButton.type = 'button';
     profileButton.textContent = 'View Profile';
 
     profileButton.addEventListener('click', () => {
         openProfile(employee);
     });
 
-    const cardSocialLinks = document.createElement('div');
-    cardSocialLinks.className = 'social-links';
+    const socialLinks = document.createElement('div');
+    socialLinks.className = 'social-links';
 
-    const cardSocials = [
+    const socialProfiles = [
         {
             name: 'LinkedIn',
             url: employee.linkedin,
@@ -109,21 +265,25 @@ function makeCard(employee) {
         }
     ];
 
-    cardSocials.forEach(social => {
-        if (!isSafeExternalUrl(social.url)) return;
+    socialProfiles.forEach(profile => {
+        if (!isSafeExternalUrl(profile.url)) {
+            return;
+        }
 
         const link = document.createElement('a');
-        link.href = social.url;
+
+        link.href = profile.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.setAttribute('aria-label', social.name);
+        link.setAttribute('aria-label', profile.name);
 
         const icon = document.createElement('img');
-        icon.src = social.icon;
-        icon.alt = social.name;
+
+        icon.src = profile.icon;
+        icon.alt = profile.name;
 
         link.appendChild(icon);
-        cardSocialLinks.appendChild(link);
+        socialLinks.appendChild(link);
     });
 
     card.append(
@@ -134,7 +294,7 @@ function makeCard(employee) {
         email,
         copyButton,
         profileButton,
-        cardSocialLinks
+        socialLinks
     );
 
     return card;
@@ -149,6 +309,7 @@ function openProfile(employee) {
 
     const closeButton = document.createElement('button');
     closeButton.className = 'modal-close';
+    closeButton.type = 'button';
     closeButton.textContent = '×';
     closeButton.setAttribute('aria-label', 'Close profile');
 
@@ -163,8 +324,7 @@ function openProfile(employee) {
     title.textContent = employee.title;
 
     const department = document.createElement('span');
-    department.className =
-        'department-badge ' + employee.department.toLowerCase();
+    department.className = 'department-badge';
     department.textContent = employee.department;
 
     const bio = document.createElement('p');
@@ -187,7 +347,7 @@ function openProfile(employee) {
     const email = document.createElement('p');
 
     const emailLink = document.createElement('a');
-    emailLink.href = 'mailto:' + employee.email;
+    emailLink.href = `mailto:${employee.email}`;
     emailLink.textContent = employee.email;
 
     email.appendChild(emailLink);
@@ -198,22 +358,25 @@ function openProfile(employee) {
     const socialProfiles = [
         {
             name: 'LinkedIn',
-            url: employee.linkedin || employee.socials?.linkedin
+            url: employee.linkedin
         },
         {
             name: 'GitHub',
-            url: employee.github || employee.socials?.github
+            url: employee.github
         },
         {
             name: 'Portfolio',
-            url: employee.portfolio || employee.socials?.portfolio
+            url: employee.portfolio
         }
     ];
 
     socialProfiles.forEach(profile => {
-        if (!isSafeExternalUrl(profile.url)) return;
+        if (!isSafeExternalUrl(profile.url)) {
+            return;
+        }
 
         const link = document.createElement('a');
+
         link.href = profile.url;
         link.textContent = profile.name;
         link.target = '_blank';
@@ -248,74 +411,118 @@ function openProfile(employee) {
         }
     });
 
-    document.addEventListener('keydown', function closeWithEscape(event) {
+    function closeWithEscape(event) {
         if (event.key === 'Escape') {
             modal.remove();
-            document.removeEventListener('keydown', closeWithEscape);
+            document.removeEventListener(
+                'keydown',
+                closeWithEscape
+            );
         }
-    });
+    }
+
+    document.addEventListener(
+        'keydown',
+        closeWithEscape
+    );
 }
 
 function renderEmployees() {
-    const query = searchInput.value.trim().toLowerCase();
-    const selectedDepartment = departmentFilter.value;
-    const selectSort = sortFilter.value;
-    const matches = employees.filter(employee => {
+    const query =
+        searchInput.value.trim().toLowerCase();
+
+    const selectedDepartment =
+        departmentFilter.value;
+
+    const selectedSort =
+        sortFilter.value;
+
+    const matchingEmployees = employees.filter(employee => {
         const matchesSearch = [
             employee.name,
             employee.title,
             employee.department,
-            employee.email,
-            //employee.bio,
-            //...(Array.isArray(employee.skills) ? employee.skills : [])
+            employee.email
         ].some(value =>
-            String(value || '').toLowerCase().includes(query)
+            String(value || '')
+                .toLowerCase()
+                .includes(query)
         );
 
         const matchesDepartment =
             selectedDepartment === 'all' ||
-            employee.department.toLowerCase() === selectedDepartment;
+            String(employee.department || '')
+                .toLowerCase() === selectedDepartment;
 
         return matchesSearch && matchesDepartment;
     });
 
-    matches.sort((employeeA, employeeB) => {
-        const nameA = String(employeeA.name || '').trim();
-        const nameB = String(employeeB.name || '').trim();
-        const comparison = nameA.localeCompare(nameB, undefined, { sensitivity: 'base' });
-        return selectSort === 'za' ? -comparison : comparison;
+    matchingEmployees.sort((employeeA, employeeB) => {
+        const nameA =
+            String(employeeA.name || '').trim();
+
+        const nameB =
+            String(employeeB.name || '').trim();
+
+        const comparison = nameA.localeCompare(
+            nameB,
+            undefined,
+            { sensitivity: 'base' }
+        );
+
+        return selectedSort === 'za'
+            ? -comparison
+            : comparison;
     });
 
-   resultsCount.textContent =
-        `Showing ${matches.length} of ${employees.length} ${
-            matches.length === 1 ? 'employee' : 'employees'
+    resultsCount.textContent =
+        `Showing ${matchingEmployees.length} of ${employees.length} ${
+            matchingEmployees.length === 1
+                ? 'employee'
+                : 'employees'
         }`;
 
     employeeList.replaceChildren();
 
-    if (matches.length === 0) {
+    if (matchingEmployees.length === 0) {
         const message = document.createElement('p');
+
         message.className = 'empty-state';
-        message.textContent = 'No employees found. Try another search.';
-        employeeList.append(message);
+        message.textContent =
+            'No employees found. Try another search.';
+
+        employeeList.appendChild(message);
         return;
     }
 
-    employeeList.append(...matches.map(makeCard));
+    employeeList.append(
+        ...matchingEmployees.map(makeCard)
+    );
 }
 
+searchInput.addEventListener(
+    'input',
+    renderEmployees
+);
 
+departmentFilter.addEventListener(
+    'change',
+    renderEmployees
+);
 
-searchInput.addEventListener('input', renderEmployees);
-departmentFilter.addEventListener('change', renderEmployees);
-sortFilter.addEventListener('change', renderEmployees);
+sortFilter.addEventListener(
+    'change',
+    renderEmployees
+);
 
-clearSearch.addEventListener('click', () => {
-    searchInput.value = '';
-    departmentFilter.value = 'all';
-    sortFilter.value = 'none';
-    renderEmployees();
-});
+if (clearButton) {
+    clearButton.addEventListener('click', () => {
+        searchInput.value = '';
+        departmentFilter.value = 'all';
+        sortFilter.value = 'az';
+        renderEmployees();
+    });
+}
 
 fetch('employees.json')
     .then(response => {
@@ -332,8 +539,14 @@ fetch('employees.json')
 
         employees = data;
 
+        updateStatistics();
+
         const departments = [
-            ...new Set(employees.map(employee => employee.department))
+            ...new Set(
+                employees
+                    .map(employee => employee.department)
+                    .filter(Boolean)
+            )
         ];
 
         departments.forEach(department => {
@@ -349,46 +562,103 @@ fetch('employees.json')
     })
     .catch(() => {
         resultsCount.textContent = '';
+
         employeeList.textContent =
             'Employee data could not load. Open this project with Live Server and try again.';
     });
 
-const menuButton = document.querySelector('.menu-toggle');
-const navigation = document.querySelector('.nav-links');
+const menuButton =
+    document.querySelector('.menu-toggle');
+
+const navigation =
+    document.querySelector('.nav-links');
+
 if (menuButton && navigation) {
     function closeMenu() {
         navigation.classList.remove('open');
-        menuButton.setAttribute('aria-expanded', 'false');
-        menuButton.setAttribute('aria-label', 'Open navigation menu');
+
+        menuButton.setAttribute(
+            'aria-expanded',
+            'false'
+        );
+
+        menuButton.setAttribute(
+            'aria-label',
+            'Open navigation menu'
+        );
+
         menuButton.textContent = '☰';
     }
+
     menuButton.addEventListener('click', () => {
-        const isOpen = navigation.classList.toggle('open');
-        menuButton.setAttribute('aria-expanded', String(isOpen));
-        menuButton.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-        menuButton.textContent = isOpen ? '×' : '☰';
+        const isOpen =
+            navigation.classList.toggle('open');
+
+        menuButton.setAttribute(
+            'aria-expanded',
+            String(isOpen)
+        );
+
+        menuButton.setAttribute(
+            'aria-label',
+            isOpen
+                ? 'Close navigation menu'
+                : 'Open navigation menu'
+        );
+
+        menuButton.textContent =
+            isOpen ? '×' : '☰';
     });
-    navigation.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMenu);
-    });
-    navigation.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
-            closeMenu();
-            menuButton.focus();
-        }
-    });
-    menuButton.addEventListener('keydown', event => {
-        if (event.key === 'Escape') closeMenu();
-    });
-    function updateActiveLink() {
-        const current = window.location.hash || '#Home';
-        navigation.querySelectorAll('a').forEach(link => {
-            const active = link.getAttribute('href') === current;
-            link.classList.toggle('active', active);
-            if (active) link.setAttribute('aria-current', 'location');
-            else link.removeAttribute('aria-current');
+
+    navigation.querySelectorAll('a')
+        .forEach(link => {
+            link.addEventListener(
+                'click',
+                closeMenu
+            );
         });
+
+    navigation.addEventListener(
+        'keydown',
+        event => {
+            if (event.key === 'Escape') {
+                closeMenu();
+                menuButton.focus();
+            }
+        }
+    );
+
+    function updateActiveLink() {
+        const current =
+            window.location.hash || '#Home';
+
+        navigation.querySelectorAll('a')
+            .forEach(link => {
+                const isActive =
+                    link.getAttribute('href') === current;
+
+                link.classList.toggle(
+                    'active',
+                    isActive
+                );
+
+                if (isActive) {
+                    link.setAttribute(
+                        'aria-current',
+                        'location'
+                    );
+                } else {
+                    link.removeAttribute(
+                        'aria-current'
+                    );
+                }
+            });
     }
-    window.addEventListener('hashchange', updateActiveLink);
+
+    window.addEventListener(
+        'hashchange',
+        updateActiveLink
+    );
+
     updateActiveLink();
 }
