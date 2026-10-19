@@ -198,7 +198,8 @@ h1 {
     border-radius: 20px;
     background: #ffffff;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-    transition: transform 0.25s ease,
+    transition:
+        transform 0.25s ease,
         box-shadow 0.25s ease;
 }
 
@@ -318,13 +319,11 @@ h1 {
     text-align: center;
 }
 
-/* Employee statistics dashboard */
-
 .statistics-section {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
-    max-width: 1140px;
+    max-width: 1200px;
     margin: 28px auto 30px;
 }
 
@@ -334,6 +333,7 @@ h1 {
     gap: 15px;
     min-height: 112px;
     padding: 20px;
+    border: 1px solid #e5e7eb;
     border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 8px 20px rgba(43, 47, 77, 0.07);
@@ -378,14 +378,6 @@ h1 {
     background: #f0ebff;
 }
 
-.stat-green {
-    border-left: 5px solid #35a56a;
-}
-
-.stat-green .stat-icon {
-    background: #e7f8ee;
-}
-
 .stat-orange {
     border-left: 5px solid #e99038;
 }
@@ -394,7 +386,13 @@ h1 {
     background: #fff1df;
 }
 
-/* Back-to-top button */
+.stat-teal {
+    border-left: 5px solid #18a7a0;
+}
+
+.stat-teal .stat-icon {
+    background: #e2f8f6;
+}
 
 .back-to-top {
     position: fixed;
@@ -411,7 +409,8 @@ h1 {
     cursor: pointer;
     font-size: 24px;
     box-shadow: 0 6px 18px rgba(57, 118, 216, 0.35);
-    transition: transform 0.2s ease,
+    transition:
+        transform 0.2s ease,
         background 0.2s ease;
 }
 
@@ -422,6 +421,14 @@ h1 {
 .back-to-top:hover {
     background: #245db5;
     transform: translateY(-4px);
+}
+
+.back-to-top:focus-visible,
+.profile-button:focus-visible,
+.copy-email:focus-visible,
+.modal-close:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
 }
 
 .profile-modal {
@@ -469,29 +476,19 @@ h1 {
     text-align: left;
 }
 
-.skills-title {
+.skills-heading {
     margin-top: 20px;
     color: #171923;
     font-size: 18px;
     text-align: left;
 }
 
-.skills-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-}
-
-.skills-list li {
-    padding: 7px 11px;
-    border-radius: 999px;
+.profile-skills {
+    padding: 12px;
+    border-radius: 12px;
     background: #eef2ff;
-    color: #4f46e5;
-    font-size: 12px;
-    font-weight: 700;
+    color: #4f46e5 !important;
+    text-align: left;
 }
 
 .modal-close {
@@ -676,5 +673,9 @@ footer {
 
     .employee-card:hover {
         transform: none;
+    }
+
+    .back-to-top {
+        transition: none;
     }
 }
