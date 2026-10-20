@@ -527,10 +527,7 @@ if (clearButton) {
 let directoryRequest = 0;
 async function loadEmployees() {
     const request = ++directoryRequest;
-    const refresh = document.querySelector('#refresh-directory');
     const status = document.querySelector('#directory-status');
-    refresh.disabled = true;
-    refresh.textContent = 'Refreshing…';
     status.hidden = true;
     try {
         if (!window.EmployeeStore) throw new Error('Connection unavailable');
@@ -555,14 +552,11 @@ async function loadEmployees() {
         if (request !== directoryRequest) return;
         status.textContent = employees.length
             ? 'Could not refresh. Showing previously loaded employees. Please try again.'
-            : 'The directory is temporarily unavailable. Please try Refresh employees again.';
+            : 'The directory is temporarily unavailable. Please reload the page to try again.';
         status.hidden = false;
         if (!employees.length) { resultsCount.textContent = ''; employeeList.replaceChildren(); }
-    } finally {
-        if (request === directoryRequest) { refresh.disabled = false; refresh.textContent = 'Refresh employees'; }
     }
 }
-document.querySelector('#refresh-directory').addEventListener('click', loadEmployees);
 loadEmployees();
 
 const menuButton =
