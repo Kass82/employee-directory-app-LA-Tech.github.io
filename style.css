@@ -615,10 +615,24 @@ footer {
 .about-section, 
 .contact-section {
     padding: 26px;
-    border: 1px solid #a2ccf1;
+    border: 1px solid #bebeef;
     border-radius: 16px;
-    background: #e9edf0;
-    box-shadow: 0 4px 12px rgba(37, 66, 135, 0.06);
+    background: #c6c6d1;
+    box-shadow: 0 4px 12px rgba(37, 66, 135, 0.06);  
+    transition: transform 0.2s ease, 
+                box-shadow 0.1s ease,
+                border-radius 0.1s ease;
+}
+
+
+@media (hover: hover) and (pointer: fine) {
+    .about-section:hover, .contact-section:hover {
+        transform: translateY(-6px);
+        border-color: #a7b3e4;
+        box-shadow: 0 16px 32px rgba(198, 197, 218, 0.342), 
+                    0 16px 12px rgba(176, 184, 203, 0.7);
+        transition: transform 0.2s ease-in, box-shadow 0.2s ease-in;
+    }
 }
 
 .about-section h2, 
@@ -730,13 +744,13 @@ footer {
 }
 
 .contact-item a {
-    color: #2563eb;
+    color: #0548da;
     text-decoration: none;
 }
 
 .contact-item a:hover {
     text-decoration: underline;
-    color: pink;
+    color: rgb(34, 118, 229);
 }
 
 .contact-item a:focus-visible {
