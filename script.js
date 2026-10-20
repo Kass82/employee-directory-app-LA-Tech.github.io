@@ -647,6 +647,21 @@ function makeSocialLinks(employee) {
     return socialLinks;
 }
 
+function makeSkillBadges(skills) {
+    const container = document.createElement('div');
+    container.className = 'skill-badges';
+    const colors = { javascript: 'blue', 'web development': 'red', leadership: 'purple', html: 'yellow', css: 'green', 'team collaboration': 'pink' };
+    for (const skill of Array.isArray(skills) ? skills : []) {
+        if (typeof skill !== 'string') continue;
+        const badge = document.createElement('span');
+        badge.className = 'skill-badge skill-' + (colors[skill.toLowerCase()] || 'default');
+        badge.textContent = skill;
+        container.append(badge);
+    }
+    if (!container.children.length) container.textContent = 'Skills not listed';
+    return container;
+}
+
 function makeCard(employee) {
     const card = document.createElement('article');
     card.className = 'employee-card';
@@ -698,6 +713,7 @@ function makeCard(employee) {
         name,
         title,
         department,
+        makeSkillBadges(employee.skills),
         email,
         copyButton,
         profileButton,
@@ -708,8 +724,13 @@ function makeCard(employee) {
 }
 
 function openProfile(employee) {
+    document.querySelector('.profile-modal .modal-close')?.click();
+    const previousFocus = document.activeElement;
     const modal = document.createElement('div');
     modal.className = 'profile-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'employee-profile-name');
 
     const content = document.createElement('div');
     content.className = 'profile-modal-content';
@@ -725,6 +746,7 @@ function openProfile(employee) {
     image.alt = employee.name;
 
     const name = document.createElement('h2');
+    name.id = 'employee-profile-name';
     name.textContent = employee.name;
 
     const title = document.createElement('p');
@@ -744,12 +766,8 @@ function openProfile(employee) {
     skillsHeading.className = 'skills-heading';
     skillsHeading.textContent = 'Skills';
 
-    const skills = document.createElement('p');
-    skills.className = 'profile-skills';
-    skills.textContent =
-        Array.isArray(employee.skills) && employee.skills.length
-            ? employee.skills.join(' • ')
-            : 'Skills not listed';
+    const skills = makeSkillBadges(employee.skills);
+    skills.classList.add('profile-skills');
 
     const email = document.createElement('p');
 
@@ -792,39 +810,92 @@ function openProfile(employee) {
         socialLinks.appendChild(link);
     });
 
-    content.append(
-        closeButton,
-        image,
-        name,
-        title,
-        department,
-        bio,
-        skillsHeading,
-        skills,
-        email,
-        socialLinks
-    );
+    const header = document.createElement('div');
+    header.className = 'profile-header';
+    const details = document.createElement('div');
+    details.append(name, title, department);
+    if (employee.image) header.append(image);
+    header.append(details);
+    const tabs = document.createElement('div');
+    tabs.className = 'profile-tabs';
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', 'Profile details');
+    const panels = document.createElement('div');
+    const buttons = [];
+    const sections = [];
+    function activate(index, focus = false) {
+        buttons.forEach((button, i) => {
+            button.classList.toggle('active', i === index);
+            button.setAttribute('aria-selected', String(i === index));
+            button.tabIndex = i === index ? 0 : -1;
+            sections[i].hidden = i !== index;
+        });
+        if (focus) buttons[index].focus();
+    }
+    ['Overview', 'Contact', 'Skills', 'Projects'].forEach((label, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'profile-tab';
+        button.id = 'profile-tab-' + index;
+        button.textContent = label;
+        button.setAttribute('role', 'tab');
+        button.setAttribute('aria-controls', 'profile-panel-' + index);
+        const panel = document.createElement('section');
+        panel.className = 'profile-panel';
+        panel.id = 'profile-panel-' + index;
+        panel.tabIndex = 0;
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', button.id);
+        button.addEventListener('click', () => activate(index));
+        button.addEventListener('keydown', event => {
+            let next;
+            if (event.key === 'ArrowRight') next = (index + 1) % 4;
+            if (event.key === 'ArrowLeft') next = (index + 3) % 4;
+            if (event.key === 'Home') next = 0;
+            if (event.key === 'End') next = 3;
+            if (next !== undefined) { event.preventDefault(); activate(next, true); }
+        });
+        buttons.push(button); sections.push(panel); tabs.append(button); panels.append(panel);
+    });
+    sections[0].append(bio);
+    sections[1].append(email, socialLinks);
+    sections[2].append(skillsHeading, skills);
+    const projectList = document.createElement('ul');
+    const projects = Array.isArray(employee.projects) ? employee.projects.filter(p => typeof p === 'string' && p.trim() && p.trim().toLowerCase() !== 'tbd') : [];
+    for (const project of projects) { const item = document.createElement('li'); item.textContent = project; projectList.append(item); }
+    if (!projects.length) { const item = document.createElement('li'); item.textContent = 'No projects listed.'; projectList.append(item); }
+    sections[3].append(projectList);
+    activate(0);
+    content.append(closeButton, header, tabs, panels);
 
     modal.appendChild(content);
     document.body.appendChild(modal);
 
-    closeButton.addEventListener('click', () => {
+    const oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    function closeProfile() {
         modal.remove();
-    });
+        document.body.style.overflow = oldOverflow;
+        document.removeEventListener('keydown', closeWithEscape);
+        if (previousFocus?.isConnected) previousFocus.focus();
+    }
+    closeButton.addEventListener('click', closeProfile);
 
     modal.addEventListener('click', event => {
         if (event.target === modal) {
-            modal.remove();
+            closeProfile();
         }
     });
 
     function closeWithEscape(event) {
         if (event.key === 'Escape') {
-            modal.remove();
-            document.removeEventListener(
-                'keydown',
-                closeWithEscape
-            );
+            closeProfile();
+        }
+        if (event.key === 'Tab') {
+            const focusable = [...content.querySelectorAll('button,a[href],[tabindex="0"]')].filter(el => !el.closest('[hidden]') && !el.disabled && el.tabIndex >= 0);
+            const first = focusable[0], last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
         }
     }
 
@@ -832,6 +903,7 @@ function openProfile(employee) {
         'keydown',
         closeWithEscape
     );
+    closeButton.focus();
 }
 
 function renderEmployees() {

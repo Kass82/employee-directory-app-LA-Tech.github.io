@@ -12,6 +12,11 @@
       "Communication",
       "Organization"
     ],
+"projects": [
+        "Employee Directory App",
+        "TBD"
+    ],
+
     "linkedin": "https://www.linkedin.com/in/ahmadiomid92/",
     "github": "https://github.com/siromidahmadi"
   },
@@ -24,10 +29,13 @@
     "bio": "Jacquese is a Team Lead who supports team collaboration, helps organize tasks, and contributes to the development of the project.",
     "skills": [
       "Leadership",
-      "Teamwork",
       "HTML",
       "CSS",
       "JavaScript"
+    ],
+    "projects": [
+        "Employee Directory App",
+        "TBD"
     ],
     "linkedin": "https://www.linkedin.com/in/jacquese-napier/",
     "github": "https://github.com/bigjacqq"
@@ -43,10 +51,16 @@
     "bio": "Miguel is a Co-Lead who assists with team communication, project planning, and completing technical tasks.",
     "skills": [
       "Leadership",
-      "Communication",
-      "Project Planning",
-      "Team Collaboration"
+      "HTML",
+      "CSS",
+      "Web Development",
+      "JavaScript"
     ],
+    "projects": [
+        "Employee Directory App",
+        "TBD"
+    ],
+
     "linkedin": "https://www.linkedin.com/in/miguel-arias-/",
     "github": "https://github.com/migWRLD"
   },
@@ -61,8 +75,7 @@
       "HTML",
       "CSS",
       "JavaScript",
-      "Web Development",
-      "Problem Solving"
+      "Web Development"
     ],
     "linkedin": "https://www.linkedin.com/in/najeeb-lubowa-05858b3b7/",
     "github": "https://github.com/Nbawali4",
@@ -79,9 +92,14 @@
       "Web Development",
       "HTML",
       "CSS",
-      "JavaScript",
-      "Problem Solving"
+      "JavaScript"
+
     ],
+    "projects": [
+        "Employee Directory App",
+        "TBD"
+    ],
+
     "linkedin": "http://www.linkedin.com/in/jessy-omoroghomwan-6b552b257",
     "github": "https://github.com/JessyJoyce"
   },
@@ -96,11 +114,16 @@
       "Web Development",
       "HTML",
       "CSS",
-      "JavaScript",
-      "Testing"
+      "JavaScript"
+    ],
+    "projects": [
+        "Employee Directory App",
+        "TBD"
     ],
     "linkedin": "https://www.linkedin.com/in/kassandra-vera-0999351a2/",
     "github": "https://github.com/Kass82",
     "portfolio": "https://kass82.github.io/"
   }
 ]
+
+
