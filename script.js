@@ -654,3 +654,26 @@ if (menuButton && navigation) {
 
     updateActiveLink();
 }
+
+// Toggle DarkMode
+let darkMode = localStorage.getItem("darkMode");
+const darkModeToggle = document.querySelector('#darkModeToggle');
+
+const enableDarkMode = () => {
+    document.body.classList.add('darkMode');
+    localStorage.setItem('darkMode', 'enabled');
+}
+const disableDarkMode = () => {
+    document.body.classList.remove('darkMode');
+    localStorage.setItem('darkMode', 'null');
+}
+
+darkMode === "enabled" ? enableDarkMode() : disableDarkMode();
+
+darkModeToggle.addEventListener('click', () => {
+    darkMode = localStorage.getItem("darkMode");
+    darkMode !== "enabled" ? enableDarkMode() : disableDarkMode()
+    console.log('Dark mode toggle clicked');
+
+});
+//
