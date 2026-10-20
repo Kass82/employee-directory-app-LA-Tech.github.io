@@ -524,48 +524,46 @@ if (clearButton) {
     });
 }
 
-fetch('employees.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Could not load employee data');
-        }
-
-        return response.json();
-    })
-    .then(data => {
-        if (!Array.isArray(data)) {
-            throw new Error('Employee data must be a list');
-        }
-
+let directoryRequest = 0;
+async function loadEmployees() {
+    const request = ++directoryRequest;
+    const refresh = document.querySelector('#refresh-directory');
+    const status = document.querySelector('#directory-status');
+    refresh.disabled = true;
+    refresh.textContent = 'Refreshing…';
+    status.hidden = true;
+    try {
+        if (!window.EmployeeStore) throw new Error('Connection unavailable');
+        const data = await window.EmployeeStore.list();
+        if (request !== directoryRequest) return;
         employees = data;
-
         updateStatistics();
-
-        const departments = [
-            ...new Set(
-                employees
-                    .map(employee => employee.department)
-                    .filter(Boolean)
-            )
-        ];
-
-        departments.forEach(department => {
+        const selected = departmentFilter.value;
+        departmentFilter.replaceChildren();
+        const all = document.createElement('option');
+        all.value = 'all'; all.textContent = 'All Departments';
+        departmentFilter.append(all);
+        const departments = [...new Set(employees.map(e => e.department).filter(Boolean))].sort();
+        for (const department of departments) {
             const option = document.createElement('option');
-
-            option.value = department.toLowerCase();
-            option.textContent = department;
-
-            departmentFilter.appendChild(option);
-        });
-
+            option.value = department.toLowerCase(); option.textContent = department;
+            departmentFilter.append(option);
+        }
+        departmentFilter.value = [...departmentFilter.options].some(o => o.value === selected) ? selected : 'all';
         renderEmployees();
-    })
-    .catch(() => {
-        resultsCount.textContent = '';
-
-        employeeList.textContent =
-            'Employee data could not load. Open this project with Live Server and try again.';
-    });
+    } catch {
+        if (request !== directoryRequest) return;
+        status.textContent = employees.length
+            ? 'Could not refresh. Showing previously loaded employees. Please try again.'
+            : 'The directory is temporarily unavailable. Please try Refresh employees again.';
+        status.hidden = false;
+        if (!employees.length) { resultsCount.textContent = ''; employeeList.replaceChildren(); }
+    } finally {
+        if (request === directoryRequest) { refresh.disabled = false; refresh.textContent = 'Refresh employees'; }
+    }
+}
+document.querySelector('#refresh-directory').addEventListener('click', loadEmployees);
+loadEmployees();
 
 const menuButton =
     document.querySelector('.menu-toggle');

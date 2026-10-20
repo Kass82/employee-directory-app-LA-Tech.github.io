@@ -679,3 +679,10 @@ footer {
         transition: none;
     }
 }
+
+/* Shared directory controls. */
+.directory-actions { display: flex; gap: 12px; margin: 16px 0; }
+.directory-actions button { min-height: 44px; padding: 10px 16px; border: 1px solid #cbd3e2; border-radius: 10px; background: #fff; color: #293951; font: inherit; cursor: pointer; }
+.directory-actions button:focus-visible { outline: 3px solid #6366f1; outline-offset: 3px; }
+.directory-actions button:disabled { opacity: .6; cursor: wait; }
+#directory-status { padding: 14px; border-radius: 10px; background: #fff4e5; color: #7c4209; line-height: 1.5; }
