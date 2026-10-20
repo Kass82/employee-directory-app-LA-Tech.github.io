@@ -29,6 +29,7 @@ function isSafeExternalUrl(link) {
 function makeCard(employee) {
     const card = document.createElement('article');
     card.className = 'employee-card';
+    card.tabIndex = 0;
 
     const avatar = document.createElement('div');
     avatar.className = 'employee-avatar';
