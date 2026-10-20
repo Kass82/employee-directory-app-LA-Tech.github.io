@@ -6,50 +6,60 @@
 
     <title>Employee Directory</title>
 
-    <!-- icon -->
     <link rel="icon" type="image/png" href="img/logo/websiteLogo.png">
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=departments-5">
 </head>
 
 <body>
     <section id="Home" class="hero-section">
         <div class="hero-container">
-
             <header class="directory-header">
                 <div class="header-container">
-
                     <a href="#Home" class="logo">LA Tech Rising</a>
 
-                    <button class="menu-toggle"
+                    <button
+                        class="menu-toggle"
                         aria-label="Toggle navigation menu"
-                        aria-expanded="false" aria-controls="primary-navigation" type="button"> 
+                        aria-expanded="false"
+                        aria-controls="primary-navigation"
+                        type="button"
+                    >
                         ☰
                     </button>
 
-                    <nav class="nav-links" id="primary-navigation"
-                        aria-label="Main navigation">
+                    <nav
+                        class="nav-links"
+                        id="primary-navigation"
+                        aria-label="Main navigation"
+                    >
                         <a href="#Home">Home</a>
                         <a href="#About">About</a>
                         <a href="#directory">Directory</a>
+                        <a href="#Departments">Departments</a>
                         <a href="#Contact">Contact</a>
                     </nav>
                 </div>
             </header>
-            
+
             <p class="header-label">EMPLOYEE DIRECTORY</p>
+
             <h1>Meet Our Team</h1>
+
             <p class="header-description">
                 Find people, departments, team members, contact
                 information and connect with our growing community
                 across our organization.
             </p>
-
         </div>
     </section>
 
     <main id="directory" class="directory-section">
         <h2>Employee Directory</h2>
+
         <p>Search and explore our team members below.</p>
+
+        <p id="directory-status" role="status" aria-live="polite" hidden></p>
+
         <section class="search-container">
             <span class="search-icon" aria-hidden="true">⌕</span>
 
@@ -72,16 +82,22 @@
                 <option value="all">All Departments</option>
             </select>
 
-            <label for="sort-filter" class="visually-hidden">Sort employees</label>
+            <label for="sort-filter" class="visually-hidden">
+                Sort employees
+            </label>
+
             <select id="sort-filter" aria-label="Sort employees">
                 <option value="az">Sort A-Z</option>
                 <option value="za">Sort Z-A</option>
             </select>
 
-            <button id="clearSearch" aria-label="Clear search and filters">Clear</button>
-
-
-            
+            <button
+                id="clearSearch"
+                type="button"
+                aria-label="Clear search and filters"
+            >
+                Clear
+            </button>
         </section>
 
         <p id="results-count" aria-live="polite"></p>
@@ -93,88 +109,67 @@
         >
             <!-- Employee cards appear here -->
         </section>
-
-        <section class="about-contact-section" >
-            <div id="About" class="about-section">
-                <h2>About <span>Our Team</span></h2>
-
-                <p class="about-description"> 
-                    We are a diverse group of professionals passionate about technology, 
-                    innovation, and making a positive impact. 
-                    Our team brings together different skills and perspectives to build great solutions.
-                </p>
-                <div class="team-values">
-                    <div class="value-item">
-                        <div class="value-icon collaboration-icon">
-                            <img src="/employee-directory-app/img/collabWebsite.gif" alt="">
-                        </div>
-                        <h3>Collaboration</h3>
-                        <p>Working together</p>
-                    </div>
-
-                    <div class="value-item">
-                        <div class="value-icon innovation-icon">
-                            <img src="/employee-directory-app/img/innovationWebsite.gif" alt="">
-                        </div>
-                        <h3>Innovation</h3>
-                        <p>Creative Solutions</p>
-                    </div>
-
-                    <div class="value-item">
-                        <div class="value-icon growth-icon">
-                            <img src="/employee-directory-app/img/GrowthWebs.gif" alt="">
-                        </div>
-                        <h3>Growth</h3>
-                        <p>Continous Learning</p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Contact Section -->
-            <div class="contact-section" id="Contact">
-                <h2>Contact <span>Us</span></h2>
-                <p class="contact-description">
-                    Get in touch with our team
-                </p>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <img src="/employee-directory-app/img/EmailWebs.gif" alt="">
-                    </div>
-                    <div> 
-                        <h3>Email</h3>
-                        <a href="mailto:Aomid6362@gmail.com">team@LaTech-Interns.com</a>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <img src="/employee-directory-app/img/LocationWeb.gif" alt="">
-                    </div>
-                    <div>
-                        <h3>Location</h3>
-                        <p>Los Angeles, CA</p>
-                    </div> 
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <img src="/employee-directory-app/img/Linkedln.gif" alt="">
-                    </div>
-                    <div>
-                        <h3>LinkedIn</h3>
-                        <a href="https://www.linkedin.com/in/ahmadiomid92/" 
-                        target="_blank" rel="noopener noreferrer">La Tech Rising</a>
-                    </div>
-                </div>
-        
-            </div>
-        </section>
     </main>
 
+    <section
+        id="Departments"
+        class="departments-section"
+        aria-labelledby="departments-heading"
+    >
+        <h2 id="departments-heading">Departments</h2>
+
+        <p>Select a department to see its team members.</p>
+
+        <div
+            id="department-grid"
+            class="department-grid"
+            role="group"
+            aria-label="Departments"
+        >
+            <!-- Department cards appear here -->
+        </div>
+
+        <div
+            id="department-members"
+            class="department-members"
+            aria-live="polite"
+            hidden
+        >
+            <!-- Selected department's employees appear here -->
+        </div>
+    </section>
+
+    <section class="about-contact-section" aria-label="About and contact">
+        <div id="About" class="about-section">
+            <h2>About <span>Our Team</span></h2>
+            <p class="about-description">We are a diverse group of professionals passionate about technology, innovation, and making a positive impact. Our team brings together different skills and perspectives to build great solutions.</p>
+            <div class="team-values">
+                <div class="value-item"><div class="value-icon collaboration-icon"><img src="img/collabWebsite.gif" alt="" loading="lazy"></div><h3>Collaboration</h3><p>Working together</p></div>
+                <div class="value-item"><div class="value-icon innovation-icon"><img src="img/innovationWebsite.gif" alt="" loading="lazy"></div><h3>Innovation</h3><p>Creative solutions</p></div>
+                <div class="value-item"><div class="value-icon growth-icon"><img src="img/GrowthWebs.gif" alt="" loading="lazy"></div><h3>Growth</h3><p>Continuous learning</p></div>
+            </div>
+        </div>
+        <div class="contact-section" id="Contact">
+            <h2>Contact <span>Us</span></h2>
+            <p class="contact-description">Get in touch with our team</p>
+            <div class="contact-item"><div class="contact-icon"><img src="img/EmailWebs.gif" alt="" loading="lazy"></div><div><h3>Email</h3><a href="mailto:Aomid6362@gmail.com">Aomid6362@gmail.com</a></div></div>
+            <div class="contact-item"><div class="contact-icon"><img src="img/LocationWeb.gif" alt="" loading="lazy"></div><div><h3>Location</h3><p>Los Angeles, CA</p></div></div>
+            <div class="contact-item"><div class="contact-icon"><img src="img/Linkedln.gif" alt="" loading="lazy"></div><div><h3>LinkedIn</h3><a href="https://www.linkedin.com/in/ahmadiomid92/" target="_blank" rel="noopener noreferrer">Omid Ahmadi</a></div></div>
+        </div>
+    </section>
+
     <footer id="site-footer">
-        <p>Contact team members using the email and social links on their cards.</p>
-        <p>Employee Directory App © 2026</p>
+        <p>
+            Contact team members using the email and social links
+            on their cards.
+        </p>
+
+        <div class="footer-bottom"><p>Employee Directory App © 2026</p><a href="admin.html" class="admin-glass footer-admin"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Admin</span></a></div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="supabase-2.118.0.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="employee-store.js"></script>
+    <script src="script.js?v=departments-5"></script>
 </body>
 </html>
