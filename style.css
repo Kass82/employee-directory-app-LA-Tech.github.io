@@ -680,6 +680,34 @@ footer {
     }
 }
 
+/* About, contact, and accessible hover treatments from PR #55. */
+.about-contact-section { display: grid; grid-template-columns: 1.1fr 1fr; gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; align-items: stretch; }
+.about-section, .contact-section { min-width: 0; padding: 26px; border: 1px solid #bebeef; border-radius: 16px; background: #c6c6d1; box-shadow: 0 4px 12px rgba(37,66,135,.06); transition: transform .2s ease, box-shadow .2s ease; scroll-margin-top: 24px; }
+.about-section h2, .contact-section h2 { margin: 0 0 12px; color: #171719; font-size: 35px; font-weight: 700; }
+.about-section h2 span, .contact-section h2 span { color: #1452e1; }
+.about-description, .contact-description { margin: 0; color: #303234; font-size: 17px; line-height: 1.7; }
+.team-values { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 28px; }
+.value-item { min-width: 0; text-align: center; }
+.value-icon { display: grid; place-items: center; width: 42px; height: 42px; margin: 0 auto 10px; border-radius: 50%; overflow: hidden; }
+.collaboration-icon { background: #f3e8ff; } .innovation-icon { background: #dbeafe; } .growth-icon { background: #dcfce7; }
+.value-item h3 { margin: 0 0 5px; color: #1f2937; font-size: 14px; }
+.value-item p { margin: 0; color: #3e4a5e; font-size: 15px; line-height: 1.5; }
+.contact-item { display: flex; align-items: flex-start; gap: 14px; margin-top: 22px; }
+.contact-icon { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; padding: 7px; overflow: hidden; box-sizing: border-box; border-radius: 9px; background: #c4c4cf; }
+.contact-item h3 { margin: 0 0 4px; color: #1f2937; font-size: 15px; }
+.contact-item p, .contact-item a { margin: 0; color: #3e4a5e; font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+.contact-item a { color: #0548da; text-decoration: none; }
+.contact-item a:hover { text-decoration: underline; }
+.contact-item a:focus-visible, .employee-card:focus-visible, .employee-card:focus-within { outline: 3px solid #6366f1; outline-offset: 3px; }
+.value-icon img, .contact-icon img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.copy-email, .profile-button { transition: background-color .2s ease, box-shadow .2s ease; }
+.profile-button:hover { background: #170eb9; box-shadow: 0 4px 10px rgba(79,70,229,.2); }
+.copy-email:hover { background: #ebeff4; box-shadow: 0 3px 8px rgba(79,70,229,.12); }
+@media (hover: hover) and (pointer: fine) { .about-section:hover, .contact-section:hover { transform: translateY(-6px); border-color: #a7b3e4; box-shadow: 0 16px 32px rgba(79,70,229,.14); } }
+@media (max-width: 760px) { .about-contact-section { grid-template-columns: 1fr; gap: 16px; margin: 20px auto; } }
+@media (max-width: 480px) { .about-contact-section { padding: 0; } .about-section, .contact-section { padding: 20px; } .about-section h2, .contact-section h2 { font-size: 23px; } .team-values { gap: 8px; } }
+@media (prefers-reduced-motion: reduce) { .about-section, .contact-section, .copy-email, .profile-button { transition: none; } .about-section:hover, .contact-section:hover { transform: none; } .value-icon img, .contact-icon img { display: none; } }
+
 /* Glass footer button for employee administration. */
 .footer-admin {
     display: inline-flex;
