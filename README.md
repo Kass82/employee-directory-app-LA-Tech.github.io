@@ -139,3 +139,26 @@ The project is designed to give interns practical experience working with real d
 **Build. Learn. Collaborate. Improve.**
 
 🌐 Live App: https://siromidahmadi.github.io/employee-directory-app/
+
+
+## Shared employee management
+
+The public directory reads from Supabase. Use **Admin login** to add, edit, or remove employees and upload JPG, PNG, or WebP photos up to 2 MB. Saved changes appear on other devices after loading or refreshing the directory. All directory fields and photos are public; enter information intended for the public directory.
+
+The existing six employee profiles have been imported. `employees.json` is the original reference data, not the live database.
+
+### One-time administrator setup
+
+1. In the Employee App Supabase dashboard, open Authentication → Users → Add user → Create new user. Enter your own email and choose your password privately.
+2. Copy that user's UUID. In Supabase SQL Editor, run the following with that exact UUID:
+
+```sql
+insert into public.directory_admins (user_id)
+values ('YOUR_AUTH_USER_UUID') on conflict do nothing;
+```
+
+3. Open `admin.html` and sign in. Only users explicitly listed in `directory_admins` can write employee records or photos. There is no public admin registration. To revoke access, remove the user's membership through Supabase. Never put a service-role/secret key in this repository; `supabase-config.js` contains only the browser publishable key.
+
+### Development and verification
+
+Serve the repository with a local static web server. Run `npm ci`, `npm run check`, and `npm test`. The pinned Supabase browser SDK and its license are committed, so GitHub Pages requires no build step. Database policies and constraints are documented in `employee-directory.sql` (already applied to the connected project). Update/delete operations detect stale records instead of silently overwriting another session's changes.
