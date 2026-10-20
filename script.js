@@ -5,6 +5,26 @@ const resultsCount = document.querySelector('#results-count');
 //line above connects js to the html
 const employeeList = document.querySelector('#employee-list');
 
+const profileModal = document.querySelector('#profile-modal');
+const closeProfileButton = document.querySelector('#close-profile');
+
+const profilePhoto = document.querySelector('#profile-photo');
+const profileName = document.querySelector('#profile-name');
+const profileTitle = document.querySelector('#profile-title');
+const profileDepartment = document.querySelector('#profile-department');
+
+const profileOverviewText =
+    document.querySelector('#profile-overview-text');
+
+const profileContactLinks =
+    document.querySelector('#profile-contact-links');
+
+const profileSkillsList =
+    document.querySelector('#profile-skills-list');
+
+const profileProjectsList =
+    document.querySelector('#profile-projects-list');
+
 const icons = {
     linkedin: "img/logo/linkedInLogo.png",
     github: "img/logo/gitHubLogo.png",
@@ -27,6 +47,37 @@ function isSafeExternalUrl(link) {
     } catch {
         return false;
     }
+}
+
+function makeSkillBadges(skills = []) {
+    const container = document.createElement('div');
+
+    container.className = 'skill-badges';
+
+    const skillColors = {
+        javascript: 'skill-blue',
+        'web development': 'skill-red',
+        'team collaboration': 'skill-pink',
+        leadership: 'skill-purple',
+        html: 'skill-yellow',
+        css: 'skill-green'
+    };
+
+    skills.forEach(skill => {
+        const badge = document.createElement('span');
+        const skillName = skill.toLowerCase();
+
+        badge.className = 'skill-badge';
+
+        const colorClass = skillColors[skillName] || 'skill-default';
+        badge.classList.add(colorClass);
+
+        badge.textContent = skill;
+
+        container.appendChild(badge);
+    });
+
+    return container;
 }
 
 function makeCard(employee) {
@@ -129,11 +180,24 @@ function makeCard(employee) {
         cardSocialLinks.appendChild(link);
     });
 
+const skills = makeSkillBadges(employee.skills || []);
+
+const viewProfileButton = document.createElement('button');
+
+viewProfileButton.type = 'button';
+viewProfileButton.className = 'view-profile-button';
+viewProfileButton.textContent = 'View Profile';
+
+viewProfileButton.addEventListener('click', () => {
+    openProfile(employee);
+});
+
     card.append(
         avatar,
         name,
         title,
         department,
+        skills,
         email,
         copyButton,
         profileButton,
@@ -157,7 +221,7 @@ function openProfile(employee) {
 
     const image = document.createElement('img');
     image.src = employee.image || '';
-    image.alt = employee.name;
+    image.alt = `${employee.name} profile photo`;
 
     const name = document.createElement('h2');
     name.textContent = employee.name;
@@ -170,27 +234,87 @@ function openProfile(employee) {
         'department-badge ' + employee.department.toLowerCase();
     department.textContent = employee.department;
 
-    const bio = document.createElement('p');
-    bio.className = 'profile-bio';
-    bio.textContent =
+    const header = document.createElement('div');
+    header.className = 'profile-header';
+    header.append(image, name, title, department);
+
+    const tabs = document.createElement('div');
+    tabs.className = 'profile-tabs';
+    tabs.setAttribute('role', 'tablist');
+
+    const panels = document.createElement('div');
+    panels.className = 'profile-panels';
+
+    const tabNames = [
+        ['overview', 'Overview'],
+        ['contact', 'Contact'],
+        ['skills', 'Skills'],
+        ['projects', 'Projects']
+    ];
+
+    const tabButtons = {};
+    const tabPanels = {};
+
+    tabNames.forEach(([tabId, tabLabel], index) => {
+        const tabButton = document.createElement('button');
+
+        tabButton.type = 'button';
+        tabButton.className = 'profile-tab';
+        tabButton.textContent = tabLabel;
+        tabButton.setAttribute('role', 'tab');
+        tabButton.setAttribute('aria-selected', index === 0);
+
+        const panel = document.createElement('section');
+
+        panel.className = 'profile-panel';
+        panel.setAttribute('role', 'tabpanel');
+
+        if (index !== 0) {
+            panel.hidden = true;
+        } else {
+            tabButton.classList.add('active');
+        }
+
+        tabButton.addEventListener('click', () => {
+            Object.values(tabButtons).forEach(button => {
+                button.classList.remove('active');
+                button.setAttribute('aria-selected', 'false');
+            });
+
+            Object.values(tabPanels).forEach(currentPanel => {
+                currentPanel.hidden = true;
+            });
+
+            tabButton.classList.add('active');
+            tabButton.setAttribute('aria-selected', 'true');
+            panel.hidden = false;
+        });
+
+        tabButtons[tabId] = tabButton;
+        tabPanels[tabId] = panel;
+
+        tabs.appendChild(tabButton);
+        panels.appendChild(panel);
+    });
+
+    const overviewHeading = document.createElement('h3');
+    overviewHeading.textContent = 'Overview';
+
+    const overviewText = document.createElement('p');
+    overviewText.textContent =
+        employee.overview ||
         employee.bio ||
         `${employee.name} is a ${employee.title} on the ${employee.department} team.`;
 
-    const skillsHeading = document.createElement('h3');
-    skillsHeading.className = 'skills-heading';
-    skillsHeading.textContent = 'Skills';
+    tabPanels.overview.append(overviewHeading, overviewText);
 
-    const skills = document.createElement('p');
-    skills.className = 'profile-skills';
-    skills.textContent =
-        Array.isArray(employee.skills) && employee.skills.length
-            ? employee.skills.join(' • ')
-            : 'Skills not listed';
+    const contactHeading = document.createElement('h3');
+    contactHeading.textContent = 'Contact';
 
     const email = document.createElement('p');
-
     const emailLink = document.createElement('a');
-    emailLink.href = 'mailto:' + employee.email;
+
+    emailLink.href = `mailto:${employee.email}`;
     emailLink.textContent = employee.email;
 
     email.appendChild(emailLink);
@@ -214,9 +338,12 @@ function openProfile(employee) {
     ];
 
     socialProfiles.forEach(profile => {
-        if (!isSafeExternalUrl(profile.url)) return;
+        if (!isSafeExternalUrl(profile.url)) {
+            return;
+        }
 
         const link = document.createElement('a');
+
         link.href = profile.url;
         link.textContent = profile.name;
         link.target = '_blank';
@@ -225,17 +352,50 @@ function openProfile(employee) {
         socialLinks.appendChild(link);
     });
 
-    content.append(
-        closeButton,
-        image,
-        name,
-        title,
-        department,
-        bio,
-        skillsHeading,
-        skills,
+    tabPanels.contact.append(
+        contactHeading,
         email,
         socialLinks
+    );
+
+    const skillsHeading = document.createElement('h3');
+    skillsHeading.textContent = 'Skills';
+
+    const skillBadges = makeSkillBadges(employee.skills || []);
+
+    tabPanels.skills.append(
+        skillsHeading,
+        skillBadges
+    );
+
+    const projectsHeading = document.createElement('h3');
+    projectsHeading.textContent = 'Projects';
+
+    const projectList = document.createElement('ul');
+    const projects = employee.projects || [];
+
+    if (projects.length === 0) {
+        const emptyProjectMessage = document.createElement('li');
+        emptyProjectMessage.textContent = 'No projects listed.';
+        projectList.appendChild(emptyProjectMessage);
+    } else {
+        projects.forEach(project => {
+            const projectItem = document.createElement('li');
+            projectItem.textContent = project;
+            projectList.appendChild(projectItem);
+        });
+    }
+
+    tabPanels.projects.append(
+        projectsHeading,
+        projectList
+    );
+
+    content.append(
+        closeButton,
+        header,
+        tabs,
+        panels
     );
 
     modal.appendChild(content);
@@ -254,7 +414,10 @@ function openProfile(employee) {
     document.addEventListener('keydown', function closeWithEscape(event) {
         if (event.key === 'Escape') {
             modal.remove();
-            document.removeEventListener('keydown', closeWithEscape);
+            document.removeEventListener(
+                'keydown',
+                closeWithEscape
+            );
         }
     });
 }
@@ -385,3 +548,4 @@ if (menuButton && navigation) {
     window.addEventListener('hashchange', updateActiveLink);
     updateActiveLink();
 }
+
