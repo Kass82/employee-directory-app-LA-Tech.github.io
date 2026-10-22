@@ -2,12 +2,40 @@
     box-sizing: border-box;
 }
 
+:root{
+    --bg-color: #ffffff;
+
+    --card-bg: #ffffff;
+    --card-border: #e5e7eb;
+
+    --text-primary: #171923;
+    --text-secondary: #6b7280;
+    --text-thirdary: #171923;
+    --card-secondary: #6b7280;
+
+    --color-lavender: #B9B3E8;
+}
+.darkMode{
+    --bg-color: #202B40;
+
+    --card-bg: #E8E7F5;
+    --card-border: #e8f0fc;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #9ca3af;
+    --text-thirdary: #171923;
+
+    --card-secondary: #000000;
+
+    --color-lavender: #B9B3E8
+}
+
 body {
     margin: 0 auto;
     max-width: 1200px;
     padding: clamp(16px, 4vw, 32px);
-    background: #f8fafc;
-    color: #171923;
+    background: var(--bg-color);
+    color: var(--text-primary);
     font-family: Arial, sans-serif;
 }
 
@@ -57,6 +85,29 @@ h1 {
     font-size: 24px;
     font-weight: 700;
     text-decoration: none;
+}
+
+#darkModeToggle{
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#darkModeToggle svg{
+    fill: var(--bg-color);
+}
+#darkModeToggle svg:last-child{
+    display: none;
+}
+.darkMode #darkModeToggle svg:first-child{
+    display: none;
+}
+.darkMode #darkModeToggle svg:last-child{
+    display: block;
 }
 
 .nav-links {
@@ -132,6 +183,7 @@ h1 {
 
 .search-container {
     display: flex;
+    flex-wrap: wrap;
     position: relative;
     align-items: center;
     width: 100%;
@@ -173,6 +225,7 @@ h1 {
 #clearSearch {
     flex: 0 0 auto;
     height: 48px;
+    max-width: fit-content;
     padding: 0 12px;
     border: 1px solid #dfe3ea;
     border-radius: 12px;
@@ -194,9 +247,9 @@ h1 {
     min-height: 480px;
     flex-direction: column;
     padding: 26px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--card-border);
     border-radius: 20px;
-    background: #ffffff;
+    background: var(--card-bg);
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
     transition:
         transform 0.25s ease,
@@ -358,7 +411,7 @@ h1 {
 
 .stat-card h2 {
     margin: 0;
-    color: #272b40;
+    color: var(--text-thirdary);
     font-size: 28px;
 }
 
@@ -368,6 +421,7 @@ h1 {
 
 .stat-blue .stat-icon {
     background: #e8f1ff;
+    color: var(--text-thirdary);
 }
 
 .stat-purple {
@@ -376,6 +430,7 @@ h1 {
 
 .stat-purple .stat-icon {
     background: #f0ebff;
+    color: var(--text-thirdary);
 }
 
 .stat-orange {
@@ -384,6 +439,8 @@ h1 {
 
 .stat-orange .stat-icon {
     background: #fff1df;
+    color: var(--text-thirdary);
+
 }
 
 .stat-teal {
@@ -392,6 +449,7 @@ h1 {
 
 .stat-teal .stat-icon {
     background: #e2f8f6;
+    color: var(--text-thirdary);
 }
 
 .back-to-top {
@@ -404,7 +462,7 @@ h1 {
     height: 48px;
     border: 0;
     border-radius: 50%;
-    background: #3976d8;
+    background: var(--color-lavender);
     color: #ffffff;
     cursor: pointer;
     font-size: 24px;
@@ -460,6 +518,7 @@ h1 {
 }
 
 .profile-modal-content h2 {
+    color: #07070a;
     margin: 18px 0 6px;
 }
 
