@@ -138,7 +138,7 @@ The project is designed to give interns practical experience working with real d
 
 **Build. Learn. Collaborate. Improve.**
 
-🌐 Live App: https://siromidahmadi.github.io/employee-directory-app/
+🌐 Live App: https://kass82.github.io/employee-directory-app-LA-Tech.github.io/
 
 
 ## Shared employee management
