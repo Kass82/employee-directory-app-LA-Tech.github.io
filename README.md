@@ -6,7 +6,7 @@ The project gives interns hands-on experience working together on a real softwar
 
 ## 🌐 Live Website
 
-👉 https://siromidahmadi.github.io/employee-directory-app/
+👉 https://kass82.github.io/employee-directory-app-LA-Tech.github.io/
 
 ## 📌 About the Project
 
